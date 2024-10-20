@@ -1,29 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import { BooksRepository } from './books.repository';
+import { Book } from './books.entity';
 
 @Injectable()
 export class BooksService {
   constructor(private readonly booksRepository: BooksRepository) {}
 
-  findAll() {
-    return this.booksRepository.findAll();
+  // Get all books
+  async getAllBooks(): Promise<Book[]> {
+    return await this.booksRepository.findAll();
   }
 
-  borrow(code: string) {
-    const book = this.booksRepository.findByCode(code);
-    if (book) {
-      book.borrow();
-      return { message: `You have borrowed ${book.title}` };
+  // Get a single book by code
+  async findBook(bookCode: string): Promise<Book> {
+    const book = await this.booksRepository.findOneByCode(bookCode);
+    if (!book) {
+      throw new Error(`Book with code ${bookCode} not found`);
     }
-    throw new Error('Book not found');
+    return book;
   }
 
-  return(code: string) {
-    const book = this.booksRepository.findByCode(code);
-    if (book) {
-      book.returnBook();
-      return { message: `You have returned ${book.title}` };
-    }
-    throw new Error('Book not found');
+  // Borrow a book
+  async borrowBook(bookCode: string): Promise<void> {
+    const book = await this.findBook(bookCode);
+    book.borrow();
+    await this.booksRepository.save(book);
+    // You may want to implement member borrowing logic here
+  }
+
+  // Return a book
+  async returnBook(bookCode: string): Promise<void> {
+    const book = await this.findBook(bookCode);
+    book.returnBook();
+    await this.booksRepository.save(book);
+    // You may want to implement member returning logic here
   }
 }

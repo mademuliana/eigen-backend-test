@@ -1,17 +1,48 @@
+import { Injectable } from '@nestjs/common';
+import { DataSource, Repository } from 'typeorm';
 import { Member } from './members.entity';
+import { MemberBook } from '../member-book.entity';
 
+@Injectable()
 export class MembersRepository {
-  private members: Member[] = [
-    new Member('M001', 'Angga'),
-    new Member('M002', 'Ferry'),
-    new Member('M003', 'Putri'),
-  ];
+  private readonly memberRepository: Repository<Member>;
+  private readonly memberBookRepository: Repository<MemberBook>;
 
-  findAll(): Member[] {
-    return this.members;
+  constructor(private readonly dataSource: DataSource) {
+    this.memberRepository = this.dataSource.getRepository(Member);
+    this.memberBookRepository = this.dataSource.getRepository(MemberBook);
   }
 
-  findByCode(code: string): Member {
-    return this.members.find((member) => member.code === code);
+  // Find all members
+  async findAll(): Promise<Member[]> {
+    return await this.memberRepository.find({
+      relations: ['borrowedBooks'], // Ensure that borrowedBooks is included in the result
+    });
+  }
+
+  // Find a member by their code
+  async findOneByCode(memberCode: string): Promise<Member | null> {
+    return await this.memberRepository.findOne({
+      where: { code: memberCode },
+      relations: ['borrowedBooks'],
+    });
+  }
+
+  // Save a member entity
+  async save(member: Member): Promise<Member> {
+    return await this.memberRepository.save(member);
+  }
+
+  // Save a borrowed book record for a member
+  async saveMemberBook(memberBook: MemberBook): Promise<MemberBook> {
+    return await this.memberBookRepository.save(memberBook);
+  }
+
+  // Find all borrowed books of a member
+  async findBorrowedBooksByMemberCode(memberCode: string): Promise<MemberBook[]> {
+    return await this.memberBookRepository.find({
+      where: { member: { code: memberCode }, returnedAt: null },
+      relations: ['book', 'member'],
+    });
   }
 }

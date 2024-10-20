@@ -1,19 +1,25 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { Book } from './books.entity';
 
+@Injectable()
 export class BooksRepository {
-  private books: Book[] = [
-    new Book('JK-45', 'Harry Potter', 'J.K. Rowling', 1),
-    new Book('SHR-1', 'A Study in Scarlet', 'Arthur Conan Doyle', 1),
-    new Book('TW-11', 'Twilight', 'Stephenie Meyer', 1),
-    new Book('HOB-83', 'The Hobbit', 'J.R.R. Tolkien', 1),
-    new Book('NRN-7', 'The Lion, the Witch and the Wardrobe', 'C.S. Lewis', 1),
-  ];
+  constructor(
+    @InjectRepository(Book)
+    private readonly repository: Repository<Book>,
+  ) {}
 
-  findAll(): Book[] {
-    return this.books;
+  async findAll(): Promise<Book[]> {
+    return this.repository.find();
   }
 
-  findByCode(code: string): Book {
-    return this.books.find((book) => book.code === code);
+  async findOneByCode(code: string): Promise<Book | undefined> {
+    return this.repository.findOne({ where: { code } });
+  }
+  
+
+  save(book: Book): Promise<Book> {
+    return this.repository.save(book);
   }
 }

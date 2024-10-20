@@ -1,11 +1,28 @@
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { MemberBook } from '../member-book.entity'; // Import the pivot table entity
+
+@Entity('books')
 export class Book {
-  constructor(
-    public code: string,
-    public title: string,
-    public author: string,
-    public stock: number,
-    public isBorrowed: boolean = false,
-  ) {}
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  code: string;
+
+  @Column()
+  title: string;
+
+  @Column()
+  author: string;
+
+  @Column()
+  stock: number;
+
+  @OneToMany(() => MemberBook, (memberBook) => memberBook.book)
+  membersBorrowing: MemberBook[]; // Link to the pivot table
+
+  @Column({ default: false })
+  isBorrowed: boolean;
 
   borrow() {
     if (this.isBorrowed || this.stock <= 0) {
