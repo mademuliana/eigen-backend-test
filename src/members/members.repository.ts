@@ -16,7 +16,7 @@ export class MembersRepository {
   // Find all members
   async findAll(): Promise<Member[]> {
     return await this.memberRepository.find({
-      relations: ['borrowedBooks'], // Ensure that borrowedBooks is included in the result
+      relations: ['borrowedBooks'],
     });
   }
 

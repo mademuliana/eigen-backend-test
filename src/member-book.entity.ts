@@ -4,15 +4,15 @@ import { Book } from './books/books.entity';
 
 @Entity('member_books')
 export class MemberBook {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn() // Change this to auto-increment integer
+  id: number; // Change the type to number
 
   @ManyToOne(() => Member, (member) => member.borrowedBooks)
-  @JoinColumn({ name: 'memberId' })
+  // @JoinColumn({ name: 'memberId' })
   member: Member;
 
   @ManyToOne(() => Book, (book) => book.membersBorrowing)
-  @JoinColumn({ name: 'bookId' })
+  // @JoinColumn({ name: 'bookId' })
   book: Book;
 
   @Column({ type: 'date' })

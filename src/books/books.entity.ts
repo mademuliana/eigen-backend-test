@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { MemberBook } from '../member-book.entity'; // Import the pivot table entity
+import { MemberBook } from '../member-book.entity';
 
 @Entity('books')
 export class Book {
@@ -19,7 +19,7 @@ export class Book {
   stock: number;
 
   @OneToMany(() => MemberBook, (memberBook) => memberBook.book)
-  membersBorrowing: MemberBook[]; // Link to the pivot table
+  membersBorrowing: MemberBook[]; 
 
   @Column({ default: false })
   isBorrowed: boolean;

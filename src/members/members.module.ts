@@ -1,4 +1,3 @@
-// members.module.ts
 import { Module } from '@nestjs/common';
 import { MembersService } from './members.service';
 import { MembersController } from './members.controller';
@@ -9,8 +8,8 @@ import { Member } from './members.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Member]), // Include the Member entity
-    BooksModule  // Import BooksModule to access BooksService
+    TypeOrmModule.forFeature([Member]),
+    BooksModule
   ],
   controllers: [MembersController],
   providers: [MembersService, MembersRepository],

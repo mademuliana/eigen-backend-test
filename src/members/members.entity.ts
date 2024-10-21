@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { MemberBook } from '../member-book.entity'; // Import the pivot table entity
+import { MemberBook } from '../member-book.entity';
 
 @Entity('members')
 export class Member {
@@ -13,15 +13,21 @@ export class Member {
   name: string;
 
   @OneToMany(() => MemberBook, (memberBook) => memberBook.member)
-  borrowedBooks: MemberBook[]; // Link to the pivot table
+  borrowedBooks: MemberBook[];
 
   @Column({ type: 'date', nullable: true })
   penaltyUntil: Date | null;
 
-  // Additional methods as before...
   canBorrow(): boolean {
     const today = new Date();
-    return this.borrowedBooks.length < 2 && (!this.penaltyUntil || today > this.penaltyUntil);
+    
+    // Filter the books where returnedAt is null (i.e., books currently borrowed)
+    const currentlyBorrowedBooks = this.borrowedBooks.filter(
+      (memberBook) => memberBook.returnedAt === null
+    );
+  
+    // Check if the member has borrowed fewer than 2 books and is not penalized
+    return currentlyBorrowedBooks.length < 2 && (!this.penaltyUntil || today > this.penaltyUntil);
   }
 
   borrowBook(memberBook: MemberBook) {

@@ -10,7 +10,7 @@ export class MembersController {
   // Get all members and their borrowed books
   @Get()
   @ApiOperation({ summary: 'Get all members with their borrowed books' })
-  @ApiResponse({ status: 200, description: 'List of members', type: [String] }) // Adjust type if you have a specific response type
+  @ApiResponse({ status: 200, description: 'List of members', type: [String] }) 
   async getAllMembers() {
     return await this.membersService.getAllMembers();
   }
@@ -19,27 +19,9 @@ export class MembersController {
   @Get(':memberCode')
   @ApiOperation({ summary: 'Get a member by code' })
   @ApiParam({ name: 'memberCode', description: 'Code of the member to retrieve' })
-  @ApiResponse({ status: 200, description: 'Member details', type: String }) // Adjust type if you have a specific response type
+  @ApiResponse({ status: 200, description: 'Member details', type: String }) 
   async getMemberByCode(@Param('memberCode') memberCode: string) {
     return await this.membersService.getMemberByCode(memberCode);
-  }
-
-  // Impose a penalty on a member
-  @Post('penalty/:memberCode')
-  @ApiOperation({ summary: 'Impose a penalty on a member' })
-  @ApiParam({ name: 'memberCode', description: 'Code of the member to impose a penalty on' })
-  @ApiBody({ type: Number, description: 'Number of days to impose the penalty' })
-  @ApiResponse({ status: 200, description: 'Penalty imposed successfully' })
-  @ApiResponse({ status: 400, description: 'Bad request if unable to impose penalty' })
-  async imposePenalty(
-    @Param('memberCode') memberCode: string,
-    @Body('days') days: number,
-  ) {
-    try {
-      return await this.membersService.imposePenalty(memberCode, days);
-    } catch (error) {
-      throw new BadRequestException(error.message);
-    }
   }
 
   // Borrow a book by book code and member code
