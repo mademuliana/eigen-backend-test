@@ -52,11 +52,11 @@ This project uses MySQL as its database.
 
   Make sure the database configuration in src/db/data-source.ts matches your environment. Open data-source.ts and review the following parameters:
 
-  -[host]: The database server address.
-  -[port]: The port used by MySQL (usually 3306).
-  -[username]: Your MySQL username.
-  -[password]: Your MySQL password.
-  -[database]: The name of the database used for this project.
+  - [host]: The database server address.
+  - [port]: The port used by MySQL (usually 3306).
+  - [username]: Your MySQL username.
+  - [password]: Your MySQL password.
+  - [database]: The name of the database used for this project.
 
 ## Compile and run the project
 
