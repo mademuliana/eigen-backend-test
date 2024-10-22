@@ -32,6 +32,32 @@
 $ npm install
 ```
 
+## Initializing the Database
+
+This project uses MySQL as its database.
+
+### Steps to Set Up the Database
+
+1. **Import the Database Structure and Dummy Data**
+
+   To set up the database schema and dummy data, import the `library.sql` file into your MySQL database. Use the following command in your MySQL terminal or a MySQL management tool (e.g., MySQL Workbench):
+
+   ```bash
+   mysql -u [your_username] -p [your_database_name] < path/to/library.sql
+   ```
+
+   Replace [your_username], [your_database_name], and path/to/library.sql with your actual MySQL username, database name, and the correct path to the library.sql file.
+
+  Configure the Database Connection
+
+  Make sure the database configuration in src/db/data-source.ts matches your environment. Open data-source.ts and review the following parameters:
+
+  [host]: The database server address.
+  [port]: The port used by MySQL (usually 3306).
+  [username]: Your MySQL username.
+  [password]: Your MySQL password.
+  [database]: The name of the database used for this project.
+
 ## Compile and run the project
 
 ```bash
