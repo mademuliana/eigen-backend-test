@@ -48,7 +48,7 @@ This project uses MySQL as its database.
 
    Replace [your_username], [your_database_name], and path/to/library.sql with your actual MySQL username, database name, and the correct path to the library.sql file.
 
-  Configure the Database Connection
+2. **Configure the Database Connection**
 
   Make sure the database configuration in src/db/data-source.ts matches your environment. Open data-source.ts and review the following parameters:
 
